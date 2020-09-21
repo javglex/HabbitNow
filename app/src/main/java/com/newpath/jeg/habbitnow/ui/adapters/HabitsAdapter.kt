@@ -19,23 +19,20 @@ class HabitsAdapter: RecyclerView.Adapter<HabitItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitItemViewHolder {
 
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater
-            .inflate(R.layout.item_habit, parent, false) as ConstraintLayout
-
-        return  HabitItemViewHolder(view)
+        return HabitItemViewHolder.from(parent)
 
     }
 
     override fun onBindViewHolder(holder: HabitItemViewHolder, position: Int) {
-
         val habitItem: MyHabit = myHabitsList[position]
-        (holder.layout.getViewById(R.id.tv_habit_name) as TextView).text = "" + habitItem.habitName
-        (holder.layout.getViewById(R.id.tv_days_active) as TextView).text = "" + habitItem.alarmType
+        val res = holder.itemView.context.resources //not used for now
+        holder.bind(habitItem)
 
     }
 
     override fun getItemCount(): Int = myHabitsList.size
+
+
 
 
 }
