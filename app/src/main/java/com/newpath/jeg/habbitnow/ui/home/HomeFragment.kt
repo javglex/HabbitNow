@@ -39,9 +39,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel._property.observe(viewLifecycleOwner, Observer {
             it?.let{
-
-                adapter.myHabitsList = it
-
+                adapter.submitList(it)
             }
         })
 
