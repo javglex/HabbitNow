@@ -1,4 +1,5 @@
 # HabbitNow
+WIP
 Help turn regular tasks into habits
 
 ## How?
