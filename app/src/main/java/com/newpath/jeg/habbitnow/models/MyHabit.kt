@@ -1,10 +1,18 @@
 package com.newpath.jeg.habbitnow.models
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.newpath.jeg.habbitnow.constants.AlarmConstants
 
-class MyHabit {
-    lateinit var id: String
-    var habitName: String = ""
-    var daysActive: ByteArray = byteArrayOf(0,0,0,0,0,0,0)
+@Entity(tableName = "habits_table")
+data class MyHabit (
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
+    @ColumnInfo(name = "habit_name")
+    var habitName: String = "",
+    @ColumnInfo(name = "days_active")
+    var daysActive: Byte = 0b01010101, //last 7 bytes represent a day of the week
+    @ColumnInfo(name = "alarm_type")
     var alarmType: Int = AlarmConstants.AlarmType.DEFAULT
-}
+)
