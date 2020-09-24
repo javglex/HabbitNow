@@ -1,26 +1,32 @@
 package com.newpath.jeg.habbitnow.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.newpath.jeg.habbitnow.database.HabitDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
+import com.newpath.jeg.habbitnow.repository.MyHabitsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
-    val _property = MutableLiveData<List<MyHabit>>()
+    private val repository: MyHabitsRepository
+    // - We can put an observer on the data (instead of polling for changes) and only update the
+    //   the UI when the data actually changes.
+    // - Repository is completely separated from the UI through the ViewModel.
+    val allHabits: LiveData<List<MyHabit>>
 
-    init{
-        var myHabit1: MyHabit = MyHabit()
-        myHabit1.habitName = "My Habit 1"
+    init {
+        val habitDao = HabitDatabase.getInstance(application).habitDatabaseDao
+        repository = MyHabitsRepository(habitDao)
+        allHabits = repository.allHabits
+    }
 
-        var myHabit2 = MyHabit()
-        myHabit2.habitName = "Oyy this habit"
-
-        var myHabits: List<MyHabit> = listOf<MyHabit>(myHabit1,myHabit2)
-
-        _property.value = myHabits
-
-
+    /**
+     * Launching a new coroutine to insert the data in a non-blocking way
+     */
+    fun insert(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(habit)
     }
 
 }

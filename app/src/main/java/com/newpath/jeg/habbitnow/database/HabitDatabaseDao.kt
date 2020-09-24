@@ -1,11 +1,10 @@
 package com.newpath.jeg.habbitnow.database
 
+import android.provider.ContactsContract.CommonDataKinds.Note
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.newpath.jeg.habbitnow.models.MyHabit
+
 
 @Dao
 interface HabitDatabaseDao {
@@ -26,6 +25,12 @@ interface HabitDatabaseDao {
     fun getFirstHabit(): MyHabit?
 
     @Query("SELECT * FROM habits_table ORDER BY id DESC")
-    fun getAllNights(): LiveData<List<MyHabit>>     //room will keep the data fresh, so you only need to call this function once. WOW!
+    fun getAllHabits(): LiveData<List<MyHabit>>     //room will keep the data fresh, so you only need to call this function once. WOW!
 
+    /*
+  * delete the object from database
+  * @param note, object to be deleted
+  */
+    @Delete
+    fun delete(habit: MyHabit?)
 }

@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         binding.rvHabitList.adapter = adapter
 
 
-        homeViewModel._property.observe(viewLifecycleOwner, Observer {
+        homeViewModel.allHabits.observe(viewLifecycleOwner, Observer {
             it?.let{
                 adapter.submitList(it)
             }
