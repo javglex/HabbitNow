@@ -37,8 +37,10 @@ class HabitsAdapter(val mHomeViewModel: HomeViewModel): ListAdapter<MyHabit, Hab
         //adding click listener
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_edit ->                         //handle menu1 click
+                R.id.action_edit -> {
+                    mHomeViewModel.onNavigateToEditHabit(habit)//handle menu1 click
                     true
+                }
                 R.id.action_enable ->                         //handle menu2 click
                     true
                 R.id.action_delete -> {

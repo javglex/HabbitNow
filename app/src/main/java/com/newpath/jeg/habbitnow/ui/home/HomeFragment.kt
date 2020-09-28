@@ -5,13 +5,17 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.newpath.jeg.habbitnow.R
 import com.newpath.jeg.habbitnow.databinding.FragmentHomeBinding
+import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.ui.adapters.HabitsAdapter
+import com.newpath.jeg.habbitnow.ui.edithabit.EditHabitFragment
 
 class HomeFragment : Fragment() {
 
@@ -43,6 +47,14 @@ class HomeFragment : Fragment() {
             }
         })
 
+        mHomeViewModel.navigateToEditHabit.observe(viewLifecycleOwner, {
+            it?.let{habit ->
+                if (habit!=null)
+                    onNavigateToEditHabitClicked(habit)
+                mHomeViewModel.onNavigateToEditHabitComplete()
+            }
+        })
+
         return binding.root
     }
 
@@ -53,4 +65,17 @@ class HomeFragment : Fragment() {
             mBinding?.rvHabitList.smoothScrollToPosition(0)
         }, 250)
     }
+
+    private fun onNavigateToEditHabitClicked(habit: MyHabit){
+        //since fab doesn't have the navcontroller, we have to find it
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment?.navController
+
+        //pass our arguments so that our fragment recognizes we are editing
+        val bundle = bundleOf(EditHabitFragment.HABIT_NAME_KEY to habit.habitName,
+            EditHabitFragment.HABIT_ID_KEY to habit.id)
+        //navigate to our editHabitFragment
+        navController?.navigate(R.id.action_nav_home_to_editHabitFragment, bundle)
+    }
+
 }

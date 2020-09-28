@@ -23,6 +23,11 @@ class EditHabitFragment : Fragment() {
     private lateinit var editHabitViewModel: EditHabitViewModel
     private val TAG: String = "EditHabitFragment"
 
+    companion object{
+        const val HABIT_NAME_KEY: String = "HABIT_NAME_KEY"
+        const val HABIT_ID_KEY: String = "HABIT_ID_KEY"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,8 +36,8 @@ class EditHabitFragment : Fragment() {
 
         //using bundle because we're not always receiving arguments (safe args)
         //for example, if arguments are empty, it means we are creating a new habit rather than editing
-        val habitName = arguments?.getString("HABIT_NAME")
-        val habitId = arguments?.getLong("HABIT_ID")
+        val habitName = arguments?.getString(HABIT_NAME_KEY)
+        val habitId = arguments?.getLong(HABIT_ID_KEY)
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentEditHabitBinding = DataBindingUtil.inflate(
@@ -42,10 +47,11 @@ class EditHabitFragment : Fragment() {
 
         if (habitId!=null){
             editHabitViewModel.mHabitId = habitId
+            Log.d(TAG,"recognized id, editing habit..")
             if (habitName != null) {
                 editHabitViewModel.mHabitName = habitName
             }
-        }
+        } else Log.d(TAG,"seems like it's a new habit, creating..")
 
         binding.lifecycleOwner = this
         binding.editHabitViewModel = editHabitViewModel
