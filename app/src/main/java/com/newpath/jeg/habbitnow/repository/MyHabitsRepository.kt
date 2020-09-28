@@ -15,4 +15,12 @@ class MyHabitsRepository(private val habitDao: HabitDatabaseDao) {
     suspend fun insert(habit: MyHabit) {
         habitDao.insert(habit)
     }
+
+    suspend fun update(habit: MyHabit){
+        habitDao.update(habit)
+    }
+
+    suspend fun delete(habit: MyHabit){
+        habitDao.delete(habit)
+    }
 }

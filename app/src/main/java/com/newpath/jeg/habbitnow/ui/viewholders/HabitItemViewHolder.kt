@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.newpath.jeg.habbitnow.R
 import com.newpath.jeg.habbitnow.databinding.ItemHabitBinding
 import com.newpath.jeg.habbitnow.models.MyHabit
-import org.jetbrains.annotations.NotNull
 
 
-class HabitItemViewHolder private constructor(private val binding: ItemHabitBinding): RecyclerView.ViewHolder(binding.root) {
+class HabitItemViewHolder private constructor(val binding: ItemHabitBinding): RecyclerView.ViewHolder(binding.root) {
 
     companion object {
         fun from(parent: ViewGroup): HabitItemViewHolder {
@@ -21,37 +20,17 @@ class HabitItemViewHolder private constructor(private val binding: ItemHabitBind
         }
     }
 
-    fun bind(habitItem: MyHabit) {
+    fun bind(habitItem: MyHabit, myCallback: (result: MyHabit) -> Unit) {
+
         binding.tvHabitName.text = "" + habitItem.habitName
-        binding.tvDaysActive.text = "" + habitItem.alarmType
+        binding.tvDaysActive.text = "" + habitItem.id
         binding.ibHabitItemMenu.setOnClickListener { view ->
             when(view.id){
-                R.id.ib_habit_item_menu -> openItemMenu(this.itemView.context,this)
+                R.id.ib_habit_item_menu -> myCallback(habitItem)
             }
         }
     }
 
-    private fun openItemMenu(context: Context, holder: HabitItemViewHolder){
 
-        //creating a popup menu
-        val popup = PopupMenu(context, holder.binding.ibHabitItemMenu)
 
-        //inflating menu from xml resource
-        popup.inflate(R.menu.menu_habit_item)
-
-        //adding click listener
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_edit ->                         //handle menu1 click
-                    true
-                R.id.action_enable ->                         //handle menu2 click
-                    true
-                R.id.action_delete ->                         //handle menu3 click
-                    true
-                else -> false
-            }
-        }
-        //displaying the popup
-        popup.show()
-    }
 }
