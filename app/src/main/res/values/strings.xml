@@ -10,6 +10,7 @@
     <string name="action_enable">Enable</string>
     <string name="action_disable">Disable</string>
     <string name="action_delete">Delete</string>
+    <string name="action_done">Finish editing</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
