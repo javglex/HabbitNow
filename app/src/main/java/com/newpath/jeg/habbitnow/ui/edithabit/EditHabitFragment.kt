@@ -70,10 +70,6 @@ class EditHabitFragment : Fragment() {
 
         })
 
-        binding.btnSubmit.setOnClickListener {
-            findNavController().popBackStack()
-            editHabitViewModel.submitHabit()
-        }
 
         setHasOptionsMenu(true)
 

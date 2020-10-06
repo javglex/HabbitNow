@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.newpath.jeg.habbitnow.constants.AlarmConstants
 
 @Entity(tableName = "habits_table")
-data class MyHabit (
+data class MyHabit(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     @ColumnInfo(name = "habit_name")
@@ -14,5 +14,10 @@ data class MyHabit (
     @ColumnInfo(name = "days_active")
     var daysActive: Byte = 0b01010101, //last 7 bytes represent a day of the week
     @ColumnInfo(name = "alarm_type")
-    var alarmType: Int = AlarmConstants.AlarmType.DEFAULT
+    var alarmType: Int = AlarmConstants.AlarmType.DEFAULT,
+    @ColumnInfo(name = "alarm_hours")
+    var alarmTimeHours: Int = 0, //hour that alarm is set to, 24 hour format
+    @ColumnInfo(name = "alarm_minutes")
+    var alarmTimeMinutes: Int = 0 //minute that alarm is set to
+
 )

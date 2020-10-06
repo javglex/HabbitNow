@@ -1,5 +1,6 @@
 package com.newpath.jeg.habbitnow.ui.adapters
 
+import android.app.TimePickerDialog
 import android.content.Context
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -9,8 +10,14 @@ import com.newpath.jeg.habbitnow.R
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.ui.home.HomeViewModel
 import com.newpath.jeg.habbitnow.ui.viewholders.HabitItemViewHolder
+import com.newpath.jeg.habbitnow.ui.viewholders.HabitItemViewHolder.Companion.ACTION_MENU
+import com.newpath.jeg.habbitnow.ui.viewholders.HabitItemViewHolder.Companion.ACTION_TIME
+import java.util.*
 
-class HabitsAdapter(val mHomeViewModel: HomeViewModel): ListAdapter<MyHabit, HabitItemViewHolder>(HabitDiffCallback()) {
+
+class HabitsAdapter(private val mHomeViewModel: HomeViewModel): ListAdapter<MyHabit, HabitItemViewHolder>(
+    HabitDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitItemViewHolder {
         return HabitItemViewHolder.from(parent)
@@ -21,12 +28,15 @@ class HabitsAdapter(val mHomeViewModel: HomeViewModel): ListAdapter<MyHabit, Hab
         val habitItem: MyHabit = getItem(position)
         val context = holder.itemView.context
         val res = context.resources //not used for now
-        holder.bind(habitItem) { res ->
-            openItemMenu(context,holder, res )
+        holder.bind(habitItem) { res, action ->
+            if (action==ACTION_MENU)
+                openItemMenu(context, holder, res)
+            else if (action==ACTION_TIME)
+                openTimePicker(context, holder, res)
         }
     }
 
-    private fun openItemMenu(context: Context, holder: HabitItemViewHolder, habit:MyHabit){
+    private fun openItemMenu(context: Context, holder: HabitItemViewHolder, habit: MyHabit){
 
         //creating a popup menu
         val popup = PopupMenu(context, holder.binding.ibHabitItemMenu)
@@ -52,6 +62,29 @@ class HabitsAdapter(val mHomeViewModel: HomeViewModel): ListAdapter<MyHabit, Hab
         }
         //displaying the popup
         popup.show()
+    }
+
+    private fun openTimePicker(context: Context, holder: HabitItemViewHolder, habit: MyHabit){
+        //TODO: create time picker
+        val cal: Calendar = Calendar.getInstance()
+        val currHour: Int = cal.get(Calendar.HOUR_OF_DAY)
+        val currMin: Int = cal.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(
+            context,
+            { view, hourOfDay, minute ->
+
+                habit.alarmTimeHours = hourOfDay
+                habit.alarmTimeMinutes = minute
+                mHomeViewModel.update(habit)
+                notifyItemChanged(holder.adapterPosition)
+
+            },
+            currHour,
+            currMin,
+            false
+        )
+        timePickerDialog.show()
     }
 
 

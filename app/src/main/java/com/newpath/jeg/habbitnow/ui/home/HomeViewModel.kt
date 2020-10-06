@@ -42,6 +42,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         repository.insert(habit)
     }
 
+    fun update(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(habit)
+    }
+
     fun delete(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(habit)
     }
