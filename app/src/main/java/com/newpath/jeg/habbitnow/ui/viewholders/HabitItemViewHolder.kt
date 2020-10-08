@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.newpath.jeg.habbitnow.R
 import com.newpath.jeg.habbitnow.databinding.ItemHabitBinding
 import com.newpath.jeg.habbitnow.models.MyHabit
+import com.newpath.jeg.habbitnow.utils.StringGenerator
 
 
 class HabitItemViewHolder private constructor(val binding: ItemHabitBinding): RecyclerView.ViewHolder(
@@ -28,7 +29,7 @@ class HabitItemViewHolder private constructor(val binding: ItemHabitBinding): Re
     fun bind(habitItem: MyHabit, myCallback: (result: MyHabit, action: Int) -> Unit) {
 
         binding.tvHabitName.text = "" + habitItem.habitName
-        binding.tvDaysActive.text = "" + habitItem.id
+        binding.tvDaysActive.text = StringGenerator.getDaysFromByte(habitItem.daysActive, binding.root.context)
 
         formatTimeDisplay(habitItem, binding.tvTimeBegins)
 

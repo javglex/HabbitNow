@@ -18,4 +18,14 @@
     <string name="customize_habit">Customize Habit</string>
     <string name="finished_habit_edit">Done</string>
     <string name="hint_habit_name">Habit name</string>
+
+    <string-array name = "daysOfWeek">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
 </resources>
