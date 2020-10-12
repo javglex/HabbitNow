@@ -4,7 +4,7 @@ package com.newpath.jeg.habbitnow.utils
 /**
  * Bit manipulation
  */
-class ByteReader {
+class ByteManipulator {
     companion object{
 
         /**
@@ -17,9 +17,17 @@ class ByteReader {
         {
             var pos = _pos
             if (pos>8) pos = 8
-
-            println(Integer.toBinaryString(BYTE.toInt() shr pos))
+            if (pos<0) pos = 0
             return ((BYTE.toInt() shr pos) and 1 == 1)
         }
+
+        fun setBit(BYTE: Byte, _pos:Int): Byte {
+            return (BYTE.toInt() or (1 shl _pos)).toByte()
+        }
+
+        fun unsetBit(BYTE: Byte, _pos: Int): Byte {
+            return (BYTE.toInt() and (1 shl _pos).inv()).toByte()
+        }
+
     }
 }

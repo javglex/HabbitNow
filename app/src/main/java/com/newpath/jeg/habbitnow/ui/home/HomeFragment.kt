@@ -73,7 +73,9 @@ class HomeFragment : Fragment() {
 
         //pass our arguments so that our fragment recognizes we are editing
         val bundle = bundleOf(EditHabitFragment.HABIT_NAME_KEY to habit.habitName,
-            EditHabitFragment.HABIT_ID_KEY to habit.id)
+            EditHabitFragment.HABIT_ID_KEY to habit.id,
+            EditHabitFragment.HABIT_HOUR_KEY to habit.alarmTimeHours,
+            EditHabitFragment.HABIT_MIN_KEY to habit.alarmTimeMinutes)
         //navigate to our editHabitFragment
         navController?.navigate(R.id.action_nav_home_to_editHabitFragment, bundle)
     }

@@ -65,7 +65,7 @@ class HabitsAdapter(private val mHomeViewModel: HomeViewModel): ListAdapter<MyHa
     }
 
     private fun openTimePicker(context: Context, holder: HabitItemViewHolder, habit: MyHabit){
-        //TODO: create time picker
+
         val cal: Calendar = Calendar.getInstance()
         val currHour: Int = cal.get(Calendar.HOUR_OF_DAY)
         val currMin: Int = cal.get(Calendar.MINUTE)

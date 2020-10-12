@@ -3,11 +3,10 @@ package com.newpath.jeg.habbitnow.ui.edithabit
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
 import com.newpath.jeg.habbitnow.database.HabitDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.repository.MyHabitsRepository
+import com.newpath.jeg.habbitnow.utils.ByteManipulator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,6 +16,9 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
     private val TAG: String = "EditHabitViewModel"
     var mHabitName: String = "New Habit"
     var mHabitId: Long? = null
+    var mHabitDaysRepeat: Byte = 0b00000000
+    var mHabitAlarmHour: Int = 0
+    var mHabitAlarmMin: Int = 0
 
     init {
         val habitDao = HabitDatabase.getInstance(application).habitDatabaseDao
@@ -29,6 +31,7 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
             Log.d(TAG,"creating new habit")
             val habit = MyHabit()
             habit.habitName = mHabitName;
+            habit.daysActive = mHabitDaysRepeat
             insertHabit(habit)
         } else
         {
@@ -36,9 +39,20 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
             val habit = MyHabit()
             habit.id = mHabitId!!
             habit.habitName = mHabitName
+            habit.daysActive = mHabitDaysRepeat
+            habit.alarmTimeMinutes = mHabitAlarmMin
+            habit.alarmTimeHours = mHabitAlarmHour
             updateHabit(habit)
         }
 
+    }
+
+    fun setDay(day: Int){
+        mHabitDaysRepeat = ByteManipulator.setBit(mHabitDaysRepeat,day)
+    }
+
+    fun unsetDay(day: Int){
+        mHabitDaysRepeat = ByteManipulator.unsetBit(mHabitDaysRepeat, day)
     }
 
     /**

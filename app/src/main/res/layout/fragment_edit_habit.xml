@@ -18,15 +18,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/customize_habit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/et_habit_name"
             android:layout_width="wrap_content"
@@ -37,8 +28,108 @@
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:text="12:59 AM"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/repeat"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+
+            <ToggleButton
+                android:id="@+id/btn_select_sun"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_sunday"
+                android:textOn="@string/day_sunday" />
+
+            <ToggleButton
+                android:id="@+id/btn_select_mon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_monday"
+                android:textOn="@string/day_monday" />
+
+            <ToggleButton
+                android:id="@+id/btn_select_tue"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_tuesday"
+                android:textOn="@string/day_tuesday" />
+
+            <ToggleButton
+                android:id="@+id/btn_select_wed"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_wednesday"
+                android:textOn="@string/day_wednesday" />
+
+            <ToggleButton
+                android:id="@+id/btn_select_thu"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_thursday"
+                android:textOn="@string/day_thursday" />
+
+            <ToggleButton
+                android:id="@+id/btn_select_fri"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_friday"
+                android:textOn="@string/day_friday" />
+
+            <ToggleButton
+                android:id="@+id/btn_select_sat"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_weekdays"
+                android:textOff="@string/day_saturday"
+                android:textOn="@string/day_saturday" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -50,15 +50,8 @@ class HabitItemViewHolder private constructor(val binding: ItemHabitBinding): Re
 
         val alarmHour: Int = habit.alarmTimeHours
         val alarmMinute: Int = habit.alarmTimeMinutes
-        val formatMinutes: String = String.format("%02d", alarmMinute)
 
-        if (alarmHour == 0) {
-            tvTime.text = "${(alarmHour + 12)}:$formatMinutes AM"
-        } else if (alarmHour > 12) {     //for military time that is 13:00 or larger, subtract 12 hours to get standard time
-            tvTime.text = "${(alarmHour - 12)}:$formatMinutes PM"
-        } else {
-            tvTime.text = "$alarmHour:$formatMinutes AM"
-        }
+        tvTime.text = StringGenerator.getTime(alarmHour,alarmMinute)
 
     }
 
