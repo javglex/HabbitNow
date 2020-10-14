@@ -15,10 +15,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     private val repository: MyHabitsRepository
     private val TAG: String = "MainActivityViewModel"
+    val allHabits: LiveData<List<MyHabit>>
 
     init {
         val habitDao = HabitDatabase.getInstance(application).habitDatabaseDao
         repository = MyHabitsRepository(habitDao)
+        allHabits = repository.allHabits
+
         Log.d(TAG,"MainActivity ViewModel initialized")
     }
 

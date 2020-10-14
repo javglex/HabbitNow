@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,11 +13,11 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.newpath.jeg.habbitnow.ui.home.HomeFragmentDirections
-import com.newpath.jeg.habbitnow.ui.home.HomeViewModel
+import com.newpath.jeg.habbitnow.models.MyHabit
+import com.newpath.jeg.habbitnow.services.AlarmService
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,6 +47,9 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
+        mainActivityViewModel.allHabits.observe(this,{
+            updateAlarmService(it)
+        })
 
     }
 
@@ -68,5 +70,20 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         //navigate to our editHabitFragment
         navController.navigate(R.id.action_nav_home_to_editHabitFragment)
+    }
+
+    private fun updateAlarmService(allHabits: List<MyHabit>){
+
+        if (allHabits == null)
+            return
+
+        allHabits.forEach { habit ->
+            val alarmTime = Calendar.getInstance()
+            alarmTime[Calendar.HOUR_OF_DAY] = habit.alarmTimeHours
+            alarmTime[Calendar.MINUTE] = habit.alarmTimeMinutes
+            alarmTime[Calendar.SECOND] = 0
+            AlarmService.setServiceAlarm(this, habit.id.toInt(), alarmTime)
+        }
+
     }
 }

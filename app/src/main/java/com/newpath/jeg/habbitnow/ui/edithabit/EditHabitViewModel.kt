@@ -32,6 +32,8 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
             val habit = MyHabit()
             habit.habitName = mHabitName;
             habit.daysActive = mHabitDaysRepeat
+            habit.alarmTimeMinutes = mHabitAlarmMin
+            habit.alarmTimeHours = mHabitAlarmHour
             insertHabit(habit)
         } else
         {
