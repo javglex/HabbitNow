@@ -49,7 +49,7 @@ class DeviceBootReceiver : BroadcastReceiver() {
             alarmTime[Calendar.HOUR_OF_DAY] = habit.alarmTimeHours
             alarmTime[Calendar.MINUTE] = habit.alarmTimeMinutes
             alarmTime[Calendar.SECOND] = 0
-            AlarmService.setServiceAlarm(context, habit.id.toInt(), alarmTime)
+            AlarmService.setServiceAlarm(context, habit, alarmTime)
         }
 
 

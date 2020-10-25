@@ -7,4 +7,6 @@
     <color name="colorAccentSecondary">#ee027c</color>
 
     <color name="bgDeleteRow">#FF0000</color>
+    <color name="btnAlarmAccept">#00B828</color>
+    <color name="btnAlarmDefer">#B80000</color>
 </resources>

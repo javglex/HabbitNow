@@ -33,6 +33,7 @@
     <string name="delete">Delete</string>
     <string name="cd_delete_item">Delete Item</string>
     <string name="cd_habit_type">Habit Type</string>
+    <string name="alarm_page_title">It\'s time for...</string>
 
     <string-array name = "daysOfWeek">
         <item>Sun</item>
