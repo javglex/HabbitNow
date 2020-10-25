@@ -14,7 +14,7 @@ data class MyHabit(
     @ColumnInfo(name = "days_active")
     var daysActive: Byte = 0b01010101, //last 7 bytes represent a day of the week
     @ColumnInfo(name = "alarm_type")
-    var alarmType: Int = AlarmConstants.AlarmType.DEFAULT,
+    var alarmType: Int = AlarmConstants.AlarmType.ALARM,
     @ColumnInfo(name = "alarm_hours")
     var alarmTimeHours: Int = 0, //hour that alarm is set to, 24 hour format
     @ColumnInfo(name = "alarm_minutes")

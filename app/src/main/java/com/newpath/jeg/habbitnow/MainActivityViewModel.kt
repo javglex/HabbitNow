@@ -31,7 +31,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun newHabit() = viewModelScope.launch(Dispatchers.IO) {
         val habit = MyHabit()
         habit.habitName = "test" + System.currentTimeMillis().toString()
-        repository.insert(habit)
+        repository.insert(habit, getApplication())
     }
 
 }

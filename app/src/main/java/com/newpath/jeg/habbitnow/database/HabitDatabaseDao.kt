@@ -10,7 +10,7 @@ import com.newpath.jeg.habbitnow.models.MyHabit
 interface HabitDatabaseDao {
 
     @Insert
-    fun insert(habit: MyHabit)
+    fun insert(habit: MyHabit): Long
 
     @Update
     fun update(habit: MyHabit)

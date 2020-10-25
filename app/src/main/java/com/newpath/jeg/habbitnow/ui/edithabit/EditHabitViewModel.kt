@@ -3,12 +3,15 @@ package com.newpath.jeg.habbitnow.ui.edithabit
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.newpath.jeg.habbitnow.constants.AlarmConstants
 import com.newpath.jeg.habbitnow.database.HabitDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.repository.MyHabitsRepository
+import com.newpath.jeg.habbitnow.services.AlarmService
 import com.newpath.jeg.habbitnow.utils.ByteManipulator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class EditHabitViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,6 +22,7 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
     var mHabitDaysRepeat: Byte = 0b00000000
     var mHabitAlarmHour: Int = 0
     var mHabitAlarmMin: Int = 0
+    var mHabitType: Int = AlarmConstants.AlarmType.ALARM
 
     init {
         val habitDao = HabitDatabase.getInstance(application).habitDatabaseDao
@@ -30,10 +34,11 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
         if (mHabitId==null) {   //if args were not passed (not editing a habit)
             Log.d(TAG,"creating new habit")
             val habit = MyHabit()
-            habit.habitName = mHabitName;
+            habit.habitName = mHabitName
             habit.daysActive = mHabitDaysRepeat
             habit.alarmTimeMinutes = mHabitAlarmMin
             habit.alarmTimeHours = mHabitAlarmHour
+            habit.alarmType = mHabitType
             insertHabit(habit)
         } else
         {
@@ -44,6 +49,7 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
             habit.daysActive = mHabitDaysRepeat
             habit.alarmTimeMinutes = mHabitAlarmMin
             habit.alarmTimeHours = mHabitAlarmHour
+            habit.alarmType = mHabitType
             updateHabit(habit)
         }
 
@@ -61,14 +67,15 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
      * Launching a new coroutine to update the data in a non-blocking way
      */
     private fun updateHabit(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(habit)
+        repository.update(habit, getApplication())
     }
 
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
     private fun insertHabit(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(habit)
+        repository.insert(habit, getApplication())
     }
+
 
 }

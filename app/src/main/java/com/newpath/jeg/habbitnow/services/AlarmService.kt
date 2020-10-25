@@ -38,6 +38,7 @@ class AlarmService: IntentService(TAG) {
                 AlarmManager.INTERVAL_DAY,
                 pi
             )
+
             Log.i(
                 TAG,
                 "set alarm for requestCode: " + requestCode + "at time: " + alarmTime.time.toString()
@@ -50,7 +51,9 @@ class AlarmService: IntentService(TAG) {
             val pi = PendingIntent.getService(context, requestCode, intent, 0)
             alarmManager.cancel(pi)
             pi.cancel()
+            Log.i(TAG,"cancelling pending intent.. $requestCode")
         }
+
 
     }
 }

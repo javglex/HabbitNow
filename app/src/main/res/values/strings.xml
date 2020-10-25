@@ -26,6 +26,13 @@
     <string name="day_thursday">Thu</string>
     <string name="day_friday">Fri</string>
     <string name="day_saturday">Sat</string>
+    <string name="no_day_selected">No Repeat Days</string>
+    <string name="alarm">Alarm</string>
+    <string name="gentle">Gentle</string>
+    <string name="type">Type</string>
+    <string name="delete">Delete</string>
+    <string name="cd_delete_item">Delete Item</string>
+    <string name="cd_habit_type">Habit Type</string>
 
     <string-array name = "daysOfWeek">
         <item>Sun</item>

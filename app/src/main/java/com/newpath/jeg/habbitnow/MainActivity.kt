@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        mainActivityViewModel.allHabits.observe(this,{
-            updateAlarmService(it)
-        })
+//        mainActivityViewModel.allHabits.observe(this,{
+//            updateAlarmService(it)
+//        })
 
     }
 
@@ -72,18 +72,5 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.action_nav_home_to_editHabitFragment)
     }
 
-    private fun updateAlarmService(allHabits: List<MyHabit>){
 
-        if (allHabits == null)
-            return
-
-        allHabits.forEach { habit ->
-            val alarmTime = Calendar.getInstance()
-            alarmTime[Calendar.HOUR_OF_DAY] = habit.alarmTimeHours
-            alarmTime[Calendar.MINUTE] = habit.alarmTimeMinutes
-            alarmTime[Calendar.SECOND] = 0
-            AlarmService.setServiceAlarm(this, habit.id.toInt(), alarmTime)
-        }
-
-    }
 }

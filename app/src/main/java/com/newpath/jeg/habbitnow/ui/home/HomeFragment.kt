@@ -11,26 +11,34 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.newpath.jeg.habbitnow.R
 import com.newpath.jeg.habbitnow.databinding.FragmentHomeBinding
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.ui.adapters.HabitsAdapter
+import com.newpath.jeg.habbitnow.ui.adapters.RecyclerItemTouchHelper
 import com.newpath.jeg.habbitnow.ui.edithabit.EditHabitFragment
+import com.newpath.jeg.habbitnow.ui.viewholders.HabitItemViewHolder
 
-class HomeFragment : Fragment() {
+
+class HomeFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private lateinit var mHomeViewModel: HomeViewModel
     private lateinit var mBinding: FragmentHomeBinding
+    private lateinit var mAdapter: HabitsAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentHomeBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_home, container, false)
+            inflater, R.layout.fragment_home, container, false
+        )
 
         mBinding = binding  //for use by onResume callback
         mHomeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -38,22 +46,26 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.homeFragmentViewModel = mHomeViewModel
 
-        val adapter = HabitsAdapter(mHomeViewModel)
-        binding.rvHabitList.adapter = adapter
+        mAdapter = HabitsAdapter(mHomeViewModel)
+        binding.rvHabitList.adapter = mAdapter
 
         mHomeViewModel.allHabits.observe(viewLifecycleOwner, Observer {
-            it?.let{
-                adapter.submitList(it)
+            it?.let {
+                mAdapter.submitList(it)
             }
         })
 
         mHomeViewModel.navigateToEditHabit.observe(viewLifecycleOwner, {
-            it?.let{habit ->
-                if (habit!=null)
+            it?.let { habit ->
+                if (habit != null)
                     onNavigateToEditHabitClicked(habit)
                 mHomeViewModel.onNavigateToEditHabitComplete()
             }
         })
+
+        val itemTouchHelperCallbackLeft: ItemTouchHelper.SimpleCallback =
+            RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+        ItemTouchHelper(itemTouchHelperCallbackLeft).attachToRecyclerView(binding.rvHabitList)
 
         return binding.root
     }
@@ -72,12 +84,39 @@ class HomeFragment : Fragment() {
         val navController = navHostFragment?.navController
 
         //pass our arguments so that our fragment recognizes we are editing
-        val bundle = bundleOf(EditHabitFragment.HABIT_NAME_KEY to habit.habitName,
+        val bundle = bundleOf(
+            EditHabitFragment.HABIT_NAME_KEY to habit.habitName,
             EditHabitFragment.HABIT_ID_KEY to habit.id,
             EditHabitFragment.HABIT_HOUR_KEY to habit.alarmTimeHours,
-            EditHabitFragment.HABIT_MIN_KEY to habit.alarmTimeMinutes)
+            EditHabitFragment.HABIT_MIN_KEY to habit.alarmTimeMinutes,
+            EditHabitFragment.HABIT_TYPE_KEY to habit.alarmType
+        )
         //navigate to our editHabitFragment
         navController?.navigate(R.id.action_nav_home_to_editHabitFragment, bundle)
+    }
+
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
+        if (viewHolder is HabitItemViewHolder) {
+            if (direction == ItemTouchHelper.LEFT) {
+
+                val habitToDelete: MyHabit = mAdapter.currentList.get(viewHolder.adapterPosition)
+                val habitName: String = habitToDelete.habitName
+
+                //Create a backup of the deleted item in case user wants to undo delete
+
+                //Remove the item from RecyclerView
+                mHomeViewModel.delete(habitToDelete)
+                val snackbar = Snackbar.make(
+                    this.requireView(),
+                    "$habitName removed from list!", Snackbar.LENGTH_LONG
+                )
+                snackbar.setAction("UNDO") { // undo is selected, restore the deleted item
+                    mHomeViewModel.insert(habitToDelete)
+                }
+                snackbar.show()
+            }
+        }
     }
 
 }

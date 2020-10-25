@@ -39,15 +39,15 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      * Launching a new coroutine to insert the data in a non-blocking way
      */
     fun insert(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(habit)
+        repository.insert(habit, getApplication())
     }
 
     fun update(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(habit)
+        repository.update(habit, getApplication())
     }
 
     fun delete(habit: MyHabit) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(habit)
+        repository.delete(habit, getApplication())
     }
 
 }
