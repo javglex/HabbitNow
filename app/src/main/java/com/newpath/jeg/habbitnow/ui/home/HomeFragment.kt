@@ -49,6 +49,13 @@ class HomeFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelper
         mAdapter = HabitsAdapter(mHomeViewModel)
         binding.rvHabitList.adapter = mAdapter
 
+        mBinding.fab.setOnClickListener{
+            view->
+            if (view.id==R.id.fab)
+                onNewHabitFabClicked(view)
+
+        }
+
         mHomeViewModel.allHabits.observe(viewLifecycleOwner, Observer {
             it?.let {
                 mAdapter.submitList(it)
@@ -117,6 +124,14 @@ class HomeFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelper
                 snackbar.show()
             }
         }
+    }
+
+    private fun onNewHabitFabClicked(view: View){
+        //since fab doesn't have the navcontroller, we have to find it
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        //navigate to our editHabitFragment
+        navController.navigate(R.id.action_nav_home_to_editHabitFragment)
     }
 
 }

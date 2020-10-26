@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_editHabitFragment"
-            app:destination="@id/editHabitFragment" />
+            app:destination="@id/editHabitFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment

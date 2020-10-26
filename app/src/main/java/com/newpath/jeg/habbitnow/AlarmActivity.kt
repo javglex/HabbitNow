@@ -26,7 +26,7 @@ class AlarmActivity: AppCompatActivity()  {
         val binding: ActivityAlarmBinding = DataBindingUtil.setContentView(
             this, R.layout.activity_alarm
         )
-        
+
         binding.btnAccept.setOnClickListener{ view ->
             if (view.id==R.id.btn_accept) {
                 Log.i(TAG, "user accepted")
