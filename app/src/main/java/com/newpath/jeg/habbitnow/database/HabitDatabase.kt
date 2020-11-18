@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
 
-@Database(entities = [MyHabit::class], version = 2, exportSchema = false)
+@Database(entities = [MyHabit::class], version = 3, exportSchema = false)
 abstract class HabitDatabase: RoomDatabase() {
 
     abstract val habitDatabaseDao: HabitDatabaseDao

@@ -8,8 +8,12 @@ import android.content.Intent
 import android.util.Log
 import com.newpath.jeg.habbitnow.AlarmActivity
 import com.newpath.jeg.habbitnow.MainActivity
+import com.newpath.jeg.habbitnow.database.HabitDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
+import com.newpath.jeg.habbitnow.repository.MyHabitsRepository
+import kotlinx.coroutines.*
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -25,10 +29,17 @@ class AlarmService: IntentService(TAG) {
             Log.i(TAG, "received an intent: $alarmId")
             if (alarmId < 0)
                 return
-            val alarmActivityIntent = Intent(baseContext, AlarmActivity::class.java)
-            alarmActivityIntent.putExtra(ALARM_NAME, intent.getStringExtra(ALARM_NAME))
-            alarmActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            application.startActivity(alarmActivityIntent)
+
+//            GlobalScope.launch(Dispatchers.IO) {
+//                //send user notification
+//                NotificationService.fireHabitNotification(baseContext, alarmId, this@AlarmService)
+//            }
+
+            val notifServiceIntent = Intent(baseContext, HeadsUpNotificationService::class.java)
+            notifServiceIntent.putExtra(ALARM_NAME, intent.getStringExtra(ALARM_NAME))
+            notifServiceIntent.putExtra(ALARM_ID, intent.getLongExtra(ALARM_ID,-1))
+            notifServiceIntent.putExtra(ALARM_TYPE, intent.getIntExtra(ALARM_TYPE,0))
+            application.startService(notifServiceIntent)
         }
     }
 
@@ -36,6 +47,7 @@ class AlarmService: IntentService(TAG) {
         const val TAG = "AlarmService" //for logging and passing a name to base class IntentService
         const val ALARM_NAME = "ALARM_NAME"
         const val ALARM_ID = "ALARM_ID"
+        const val ALARM_TYPE = "ALARM_TYPE"
 
         private fun newIntent(context: Context?): Intent {
             return Intent(context, AlarmService::class.java)
@@ -49,6 +61,7 @@ class AlarmService: IntentService(TAG) {
             val intent = newIntent(context)
             intent.putExtra(ALARM_ID, habit.id)
             intent.putExtra(ALARM_NAME, habit.habitName)
+            intent.putExtra(ALARM_TYPE, habit.alarmType)
             intent.action = "ALARM$habit.id"
 
             val pi = PendingIntent.getService(context, 0, intent, 0)

@@ -32,6 +32,11 @@ class MyHabitsRepository(private val habitDao: HabitDatabaseDao) {
         deleteAlarmIntent(habit, context)
     }
 
+    suspend fun getHabit(id: Long): MyHabit?{
+        return habitDao.get(id)
+
+    }
+
     private fun updateAlarmService(habit: MyHabit, context: Context){
 
         if (habit == null)

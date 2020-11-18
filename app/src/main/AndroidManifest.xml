@@ -32,6 +32,7 @@
         </activity>
 
         <service android:name=".services.AlarmService" />
+        <service android:name=".services.HeadsUpNotificationService" />
 
         <receiver android:name=".receivers.DeviceBootReceiver"
             android:enabled="false">
@@ -40,9 +41,21 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".receivers.HeadsUpNotificationActionReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="ACCEPT_ACTION_KEY" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="DEFER_ACTION_KEY" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
     <!-- Permission to start Alarm on device reboot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
 
 </manifest>

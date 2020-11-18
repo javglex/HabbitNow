@@ -20,6 +20,7 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
     var mHabitName: String = "New Habit"
     var mHabitId: Long? = null
     var mHabitDaysRepeat: Byte = 0b00000000
+    var mHabitIntervalMillis: Long = 0L
     var mHabitAlarmHour: Int = 0
     var mHabitAlarmMin: Int = 0
     var mHabitType: Int = AlarmConstants.AlarmType.ALARM

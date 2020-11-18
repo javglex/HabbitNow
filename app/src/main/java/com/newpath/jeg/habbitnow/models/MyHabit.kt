@@ -18,6 +18,8 @@ data class MyHabit(
     @ColumnInfo(name = "alarm_hours")
     var alarmTimeHours: Int = 0, //hour that alarm is set to, 24 hour format
     @ColumnInfo(name = "alarm_minutes")
-    var alarmTimeMinutes: Int = 0 //minute that alarm is set to
+    var alarmTimeMinutes: Int = 0, //minute that alarm is set to
+    @ColumnInfo(name = "alarm_interval_millis")
+    var alarmIntervalMillis: Long = 0
 
 )

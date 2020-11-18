@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -34,6 +35,7 @@ class EditHabitFragment : Fragment() {
         const val HABIT_ID_KEY: String = "HABIT_ID_KEY"
         const val HABIT_HOUR_KEY: String = "HABIT_HOUR_KEY"
         const val HABIT_MIN_KEY: String = "HABIT_MIN_KEY"
+        const val HABIT_INTVL_KEY: String = "HABIT_INTVL_KEY"
         const val HABIT_TYPE_KEY: String = "HABIT_TYPE_KEY"
     }
 
@@ -49,6 +51,7 @@ class EditHabitFragment : Fragment() {
         val habitId:Long? = arguments?.getLong(HABIT_ID_KEY)
         val habitHours:Int? = arguments?.getInt(HABIT_HOUR_KEY,0)
         val habitMinutes:Int? = arguments?.getInt(HABIT_MIN_KEY,0)
+        val habitInterval: Long? = arguments?.getLong(HABIT_INTVL_KEY)
         val habitType:Int? = arguments?.getInt(HABIT_TYPE_KEY,0)
 
         // Get a reference to the binding object and inflate the fragment views.
@@ -65,6 +68,7 @@ class EditHabitFragment : Fragment() {
             mEditHabitViewModel.mHabitAlarmHour = habitHours!!
             mEditHabitViewModel.mHabitAlarmMin = habitMinutes!!
             mEditHabitViewModel.mHabitType = habitType!!
+            mEditHabitViewModel.mHabitIntervalMillis = habitInterval!!
 
         } else Log.d(TAG, "seems like it's a new habit, creating..")
 
@@ -177,6 +181,20 @@ class EditHabitFragment : Fragment() {
         binding.tbtnAlarm1.isChecked = habitType==AlarmConstants.AlarmType.ALARM
         binding.tbtnGentle1.isChecked = habitType==AlarmConstants.AlarmType.NOTIFICATION
 
+        binding.seekbarInterval.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                if ((p1*3).rem(15)==0){
+                    Log.d(TAG,StringGenerator.minutesToHours(p1*3))
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
 
         setHasOptionsMenu(true)
 

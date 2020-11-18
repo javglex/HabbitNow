@@ -28,6 +28,27 @@ class StringGenerator {
             return daysActive.trim()
         }
 
+        fun minutesToHours(minutes: Int): String{
+            var hours: Int = 0
+            var remainingMinutes: Int = minutes
+
+            while(remainingMinutes>59){
+                remainingMinutes-=60
+                hours++
+            }
+
+            var minutesFormatted: String = ""
+            if (hours==1)
+                minutesFormatted = "$hours Hour"
+            else if (hours>1)
+                minutesFormatted = "$hours Hours"
+            if (remainingMinutes>0 && minutesFormatted.isNotBlank())
+                minutesFormatted += " and $remainingMinutes Minutes"
+            else if (remainingMinutes>0)
+                minutesFormatted = "$remainingMinutes Minutes"
+
+            return minutesFormatted
+        }
 
         fun getTime(alarmHour: Int, mins: Int): String{
 
