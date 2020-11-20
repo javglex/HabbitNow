@@ -29,6 +29,10 @@ class StringGenerator {
         }
 
         fun minutesToHours(minutes: Int): String{
+
+            if (minutes<=0)
+                return "0 Minutes";
+
             var hours: Int = 0
             var remainingMinutes: Int = minutes
 

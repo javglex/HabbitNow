@@ -18,6 +18,7 @@ import com.newpath.jeg.habbitnow.constants.AlarmConstants
 import com.newpath.jeg.habbitnow.databinding.FragmentEditHabitBinding
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.ui.viewholders.HabitItemViewHolder
+import com.newpath.jeg.habbitnow.utils.NumberConvert
 import com.newpath.jeg.habbitnow.utils.StringGenerator
 import java.util.*
 
@@ -183,8 +184,13 @@ class EditHabitFragment : Fragment() {
 
         binding.seekbarInterval.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if ((p1*3).rem(15)==0){
-                    Log.d(TAG,StringGenerator.minutesToHours(p1*3))
+                var minutes: Int = p1*3
+                if (minutes.rem(15)==0){ //only update at certain progress interval
+                    Log.d(TAG,StringGenerator.minutesToHours(minutes))
+                    //update the habit model with the new interval time (convert to milliseconds)
+                    mEditHabitViewModel.setInterval(minutes)
+                    binding.tvIntervalTime.text = StringGenerator.minutesToHours(minutes)
+
                 }
             }
 
@@ -195,6 +201,12 @@ class EditHabitFragment : Fragment() {
             }
 
         })
+
+        binding.seekbarInterval.progress = NumberConvert.milliToMinutes(mEditHabitViewModel.mHabitIntervalMillis)/3
+
+        binding.tvIntervalTime.text = StringGenerator.minutesToHours(
+            NumberConvert.milliToMinutes(mEditHabitViewModel.mHabitIntervalMillis)
+        )
 
         setHasOptionsMenu(true)
 

@@ -32,28 +32,29 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun submitHabit(){
+
+        val habit = MyHabit()
+        habit.habitName = mHabitName
+        habit.daysActive = mHabitDaysRepeat
+        habit.alarmTimeMinutes = mHabitAlarmMin
+        habit.alarmTimeHours = mHabitAlarmHour
+        habit.alarmType = mHabitType
+        habit.alarmIntervalMillis = mHabitIntervalMillis
+
         if (mHabitId==null) {   //if args were not passed (not editing a habit)
             Log.d(TAG,"creating new habit")
-            val habit = MyHabit()
-            habit.habitName = mHabitName
-            habit.daysActive = mHabitDaysRepeat
-            habit.alarmTimeMinutes = mHabitAlarmMin
-            habit.alarmTimeHours = mHabitAlarmHour
-            habit.alarmType = mHabitType
             insertHabit(habit)
         } else
         {
             Log.d(TAG,"updating existing habit")
-            val habit = MyHabit()
             habit.id = mHabitId!!
-            habit.habitName = mHabitName
-            habit.daysActive = mHabitDaysRepeat
-            habit.alarmTimeMinutes = mHabitAlarmMin
-            habit.alarmTimeHours = mHabitAlarmHour
-            habit.alarmType = mHabitType
             updateHabit(habit)
         }
 
+    }
+
+    fun setInterval(mins: Int){
+        mHabitIntervalMillis = (mins*1000).toLong() //1000 to convert to millis. 3 just to have 15 minutes
     }
 
     fun setDay(day: Int){

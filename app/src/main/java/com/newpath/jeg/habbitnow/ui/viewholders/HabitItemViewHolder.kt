@@ -78,12 +78,12 @@ class HabitItemViewHolder private constructor(val binding: ItemHabitBinding): Re
             }
         }
 
-        binding.clViewForeground.setOnLongClickListener  { view ->
+        binding.clViewForeground.setOnClickListener { view ->
             when(view.id){
                 R.id.cl_view_foreground ->
                     myCallback(habitItem, ACTION_EDIT_HABIT)
             }
-            return@setOnLongClickListener true
+            return@setOnClickListener
         }
     }
 
