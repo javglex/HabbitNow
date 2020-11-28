@@ -56,36 +56,45 @@ class AlarmService: IntentService(TAG) {
         fun setServiceAlarm(
             context: Context,
             habit: MyHabit,
-            alarmTime: Calendar
+            alarmTimeMillis: Long
         ) {
-            val intent = newIntent(context)
+            val appContext: Context = context.applicationContext
+            val intent = newIntent(appContext)
             intent.putExtra(ALARM_ID, habit.id)
             intent.putExtra(ALARM_NAME, habit.habitName)
             intent.putExtra(ALARM_TYPE, habit.alarmType)
             intent.action = "ALARM$habit.id"
+//            if (alarmTime.timeInMillis<System.currentTimeMillis()) //time already passed, set it for the next available day
 
-            val pi = PendingIntent.getService(context, 0, intent, 0)
-            val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
+            val pi = PendingIntent.getService(appContext, habit.id.toInt(), intent, 0)
+            val alarmManager = appContext.getSystemService(ALARM_SERVICE) as AlarmManager
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
-                alarmTime.timeInMillis,
-                AlarmManager.INTERVAL_DAY,
+                alarmTimeMillis,
+                habit.alarmIntervalMillis,
                 pi
             )
 
             Log.i(
                 TAG,
-                "set alarm with id: " + habit.id + "at time: " + alarmTime.time.toString()
+                "set alarm with id: " + habit.id + " at time: " + alarmTimeMillis.toString()
+                    + " with interval " + habit.alarmIntervalMillis
             )
         }
 
-        fun clearServiceAlarm(context: Context, requestCode: Int){
-            val intent = newIntent(context)
-            val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-            val pi = PendingIntent.getService(context, requestCode, intent, 0)
+        fun clearServiceAlarm(context: Context, habit: MyHabit){
+            val appContext: Context = context.applicationContext
+            val intent = newIntent(appContext)
+            intent.putExtra(ALARM_ID, habit.id)
+            intent.putExtra(ALARM_NAME, habit.habitName)
+            intent.putExtra(ALARM_TYPE, habit.alarmType)
+            intent.action = "ALARM$habit.id"
+            val alarmManager = appContext.getSystemService(ALARM_SERVICE) as AlarmManager
+            val pi = PendingIntent.getService(appContext, habit.id.toInt(), intent, 0)
+
             alarmManager.cancel(pi)
             pi.cancel()
-            Log.i(TAG, "cancelling pending intent.. $requestCode")
+            Log.i(TAG, "cancelling pending intent.. ${habit.id.toInt()}")
         }
 
 

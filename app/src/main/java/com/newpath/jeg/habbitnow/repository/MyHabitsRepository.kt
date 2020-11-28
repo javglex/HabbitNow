@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.newpath.jeg.habbitnow.database.HabitDatabaseDao
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.services.AlarmService
+import com.newpath.jeg.habbitnow.utils.MyHabitCalendarHelper
 import java.util.*
 import java.util.concurrent.Callable
 
@@ -42,20 +43,16 @@ class MyHabitsRepository(private val habitDao: HabitDatabaseDao) {
         if (habit == null)
             return
 
-        val alarmTime = Calendar.getInstance()
-        alarmTime[Calendar.HOUR_OF_DAY] = habit.alarmTimeHours
-        alarmTime[Calendar.MINUTE] = habit.alarmTimeMinutes
-        alarmTime[Calendar.SECOND] = 0
+        val alarmTime: Long = MyHabitCalendarHelper.getHabitTimeInMillis(habit)
         AlarmService.setServiceAlarm(context, habit, alarmTime)
 
     }
 
     private fun deleteAlarmIntent(habit: MyHabit, context: Context){
-        val alarmTime = Calendar.getInstance()
-        alarmTime[Calendar.HOUR_OF_DAY] = habit.alarmTimeHours
-        alarmTime[Calendar.MINUTE] = habit.alarmTimeMinutes
-        alarmTime[Calendar.SECOND] = 0
-        AlarmService.clearServiceAlarm(context, habit.id.toInt())
+        if (habit == null)
+            return
+
+        AlarmService.clearServiceAlarm(context, habit)
     }
 
 }

@@ -54,7 +54,7 @@ class EditHabitViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun setInterval(mins: Int){
-        mHabitIntervalMillis = (mins*1000).toLong() //1000 to convert to millis. 3 just to have 15 minutes
+        mHabitIntervalMillis = (mins*1000).toLong() //1000 to convert to millis. TODO: multiply by 60 after testing
     }
 
     fun setDay(day: Int){

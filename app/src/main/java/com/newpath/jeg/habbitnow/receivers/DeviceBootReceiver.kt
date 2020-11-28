@@ -11,6 +11,7 @@ import com.newpath.jeg.habbitnow.database.HabitDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
 import com.newpath.jeg.habbitnow.repository.MyHabitsRepository
 import com.newpath.jeg.habbitnow.services.AlarmService
+import com.newpath.jeg.habbitnow.utils.MyHabitCalendarHelper
 import java.util.*
 
 /**
@@ -45,11 +46,10 @@ class DeviceBootReceiver : BroadcastReceiver() {
         }
 
         habits.forEach { habit ->
-            val alarmTime = Calendar.getInstance()
-            alarmTime[Calendar.HOUR_OF_DAY] = habit.alarmTimeHours
-            alarmTime[Calendar.MINUTE] = habit.alarmTimeMinutes
-            alarmTime[Calendar.SECOND] = 0
+
+            val alarmTime: Long = MyHabitCalendarHelper.getHabitTimeInMillis(habit)
             AlarmService.setServiceAlarm(context, habit, alarmTime)
+
         }
 
 
