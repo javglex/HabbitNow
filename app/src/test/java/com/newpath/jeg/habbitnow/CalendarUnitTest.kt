@@ -7,7 +7,6 @@ import com.newpath.jeg.habbitnow.utils.MyHabitCalendarHelper.Companion.getHabitT
 import com.newpath.jeg.habbitnow.utils.MyHabitCalendarHelper.Companion.getNextDayMillis
 import junit.framework.Assert.assertEquals
 import org.junit.Test
-import java.util.*
 
 class CalendarUnitTest {
 
@@ -15,7 +14,7 @@ class CalendarUnitTest {
     fun mondayDiffTuesdayGet86k(){
         var day1: Int = 1
         var day2: Int = 2
-        var diff: Long = MyHabitCalendarHelper.getDiffInWeekDays(day1, day2)
+        var diff: Long = MyHabitCalendarHelper.getMilliDiffBetweenWeekDays(day1, day2)
 
         assertEquals(diff, 86400000)
     }
@@ -24,7 +23,7 @@ class CalendarUnitTest {
     fun mondayDiffWedGet132k(){
         var day1: Int = 1
         var day2: Int = 3
-        var diff: Long = MyHabitCalendarHelper.getDiffInWeekDays(day1, day2)
+        var diff: Long = MyHabitCalendarHelper.getMilliDiffBetweenWeekDays(day1, day2)
 
         assertEquals(diff, 86400000 * 2)
     }
@@ -33,7 +32,7 @@ class CalendarUnitTest {
     fun tueDiffMonGet86k(){
         var day1: Int = 2
         var day2: Int = 1
-        var diff: Long = MyHabitCalendarHelper.getDiffInWeekDays(day1, day2)
+        var diff: Long = MyHabitCalendarHelper.getMilliDiffBetweenWeekDays(day1, day2)
 
         assertEquals(diff, 86400000)
     }
@@ -61,15 +60,15 @@ class CalendarUnitTest {
     }
 
     @Test
-    fun habitAlarm830pNextActive(){
+    fun habitAlarm830pNextActive(){ //TODO: this test will fail on a different day
         var habit: MyHabit = MyHabit()
         habit.alarmTimeHours = 8
         habit.alarmTimeMinutes = 30
-        habit.daysActive = ByteManipulator.setBit(habit.daysActive, 3)
+        habit.daysActive = ByteManipulator.setBit(habit.daysActive, 3) //setting wednesday
         var nextDayMillis = getNextDayMillis(habit)
         var currTimeMillis = getHabitTimeInMillis(habit)
-        //no repeat days set, should get currtime + 24hours
-        assertEquals(nextDayMillis, currTimeMillis + MyHabitCalendarHelper.DAYINMILLIS)
+
+        assertEquals(nextDayMillis, currTimeMillis + (MyHabitCalendarHelper.DAYINMILLIS*4))
     }
 
 

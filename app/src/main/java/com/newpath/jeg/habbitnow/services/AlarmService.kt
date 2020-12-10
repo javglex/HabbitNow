@@ -6,14 +6,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.newpath.jeg.habbitnow.AlarmActivity
-import com.newpath.jeg.habbitnow.MainActivity
-import com.newpath.jeg.habbitnow.database.HabitDatabase
 import com.newpath.jeg.habbitnow.models.MyHabit
-import com.newpath.jeg.habbitnow.repository.MyHabitsRepository
+import com.newpath.jeg.habbitnow.utils.MyHabitCalendarHelper
 import kotlinx.coroutines.*
+import java.lang.Exception
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -37,8 +34,8 @@ class AlarmService: IntentService(TAG) {
 
             val notifServiceIntent = Intent(baseContext, HeadsUpNotificationService::class.java)
             notifServiceIntent.putExtra(ALARM_NAME, intent.getStringExtra(ALARM_NAME))
-            notifServiceIntent.putExtra(ALARM_ID, intent.getLongExtra(ALARM_ID,-1))
-            notifServiceIntent.putExtra(ALARM_TYPE, intent.getIntExtra(ALARM_TYPE,0))
+            notifServiceIntent.putExtra(ALARM_ID, intent.getLongExtra(ALARM_ID, -1))
+            notifServiceIntent.putExtra(ALARM_TYPE, intent.getIntExtra(ALARM_TYPE, 0))
             application.startService(notifServiceIntent)
         }
     }
@@ -60,25 +57,38 @@ class AlarmService: IntentService(TAG) {
         ) {
             val appContext: Context = context.applicationContext
             val intent = newIntent(appContext)
+            var currentTimeMillis = alarmTimeMillis
             intent.putExtra(ALARM_ID, habit.id)
             intent.putExtra(ALARM_NAME, habit.habitName)
             intent.putExtra(ALARM_TYPE, habit.alarmType)
             intent.action = "ALARM$habit.id"
-//            if (alarmTime.timeInMillis<System.currentTimeMillis()) //time already passed, set it for the next available day
+
+            if (currentTimeMillis < System.currentTimeMillis()) { //time already passed, set it for the next available day
+                Log.i(TAG, "set time already passed, setting alarm for next available day..")
+                try {
+                    currentTimeMillis = MyHabitCalendarHelper.getNextDayMillis(habit)
+                }catch(e : Exception){
+                    Log.e(TAG,e.localizedMessage)
+                    return
+                }
+            }
 
             val pi = PendingIntent.getService(appContext, habit.id.toInt(), intent, 0)
             val alarmManager = appContext.getSystemService(ALARM_SERVICE) as AlarmManager
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
-                alarmTimeMillis,
+                currentTimeMillis,
                 habit.alarmIntervalMillis,
                 pi
             )
 
+            val calendar = Calendar.getInstance() //for debugging times set
+            calendar.timeInMillis = currentTimeMillis
+
             Log.i(
                 TAG,
-                "set alarm with id: " + habit.id + " at time: " + alarmTimeMillis.toString()
-                    + " with interval " + habit.alarmIntervalMillis
+                "set alarm with id: " + habit.id + " at time: " + calendar.time.toString()
+                        + " with interval " + habit.alarmIntervalMillis
             )
         }
 

@@ -12,7 +12,7 @@ data class MyHabit(
     @ColumnInfo(name = "habit_name")
     var habitName: String = "",
     @ColumnInfo(name = "days_active")
-    var daysActive: Byte = 0b01010101, //last 7 bytes represent a day of the week
+    var daysActive: Byte = 0b00000000, //last 7 bytes represent a day of the week
     @ColumnInfo(name = "alarm_type")
     var alarmType: Int = AlarmConstants.AlarmType.ALARM,
     @ColumnInfo(name = "alarm_hours")
