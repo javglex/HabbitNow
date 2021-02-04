@@ -118,7 +118,8 @@ class HeadsUpNotificationService : Service() {
                 .addAction(R.drawable.ic_baseline_alarm_24, "On it!", receiveCallPendingIntent)
                 .addAction(R.drawable.ic_baseline_notifications_active_24, "Not this time", cancelCallPendingIntent)
                 .setAutoCancel(true)
-                .setFullScreenIntent(fullScreenPendingIntent, true)
+            if (alarmType == AlarmConstants.AlarmType.ALARM)
+                notificationBuilder.setFullScreenIntent(fullScreenPendingIntent, true)
 
 
             var incomingHabitNotification: Notification? = null

@@ -18,8 +18,6 @@ import java.util.*
  */
 class AlarmService: IntentService(TAG) {
 
-
-
     override fun onHandleIntent(intent: Intent?) {
         if (intent!=null) {
             val alarmId: Long = intent.getLongExtra(ALARM_ID, -1)
